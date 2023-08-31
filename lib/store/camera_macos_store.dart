@@ -57,7 +57,7 @@ abstract class _CameraMacOsStoreBase with Store {
           await CameraMacOS.instance.listDevices(
         deviceType: CameraMacOSDeviceType.video,
       );
-
+      print(videoDevices.length);
       if (videoDevices.isNotEmpty) {
         selectedVideoDevice = videoDevices.first.deviceId;
       }

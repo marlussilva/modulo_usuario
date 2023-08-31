@@ -12,6 +12,13 @@ abstract class _CadUsuarioStoreBase with Store {
   final passwordController = TextEditingController();
   final urlPhotoController = TextEditingController();
 
+  // Expressões regulares
+  final _cpfRegex = RegExp(r"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
+  final _phoneRegex =
+      RegExp(r"^\(\d{2}\) \d{5}-\d{4}$"); // Formato (XX) XXXXX-XXXX
+  final _emailRegex =
+      RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$");
+
   @observable
   String? name;
 
@@ -45,35 +52,42 @@ abstract class _CadUsuarioStoreBase with Store {
   @observable
   bool passwordTouched = false;
 
-  @observable
-  bool urlPhotoTouched = false;
+
 
   @computed
   String? get nameError =>
       nameTouched && (name?.isEmpty ?? true) ? "Nome é obrigatório!" : null;
 
   @computed
-  String? get cpfError =>
-      cpfTouched && (cpf?.isEmpty ?? true) ? "CPF é obrigatório!" : null;
+  String? get cpfError {
+    if (cpfTouched && (cpf?.isEmpty ?? true)) return "CPF é obrigatório!";
+    if (cpfTouched && !_cpfRegex.hasMatch(cpf!)) return "CPF inválido!";
+    return null;
+  }
 
   @computed
-  String? get phoneError => phoneTouched && (phone?.isEmpty ?? true)
-      ? "Telefone é obrigatório!"
-      : null;
+  String? get phoneError {
+    if (phoneTouched && (phone?.isEmpty ?? true))
+      return "Telefone é obrigatório!";
+    if (phoneTouched && !_phoneRegex.hasMatch(phone!))
+      return "Telefone inválido!";
+    return null;
+  }
 
   @computed
-  String? get emailError =>
-      emailTouched && (email?.isEmpty ?? true) ? "Email é obrigatório!" : null;
+  String? get emailError {
+    if (emailTouched && (email?.isEmpty ?? true)) return "Email é obrigatório!";
+    if (emailTouched && !_emailRegex.hasMatch(email!))
+      return "Formato de e-mail inválido!";
+    return null;
+  }
 
   @computed
   String? get passwordError => passwordTouched && (password?.isEmpty ?? true)
       ? "Senha é obrigatória!"
       : null;
 
-  @computed
-  String? get urlPhotoError => urlPhotoTouched && (urlPhoto?.isEmpty ?? true)
-      ? "URL da foto é obrigatória!"
-      : null;
+
 
   void resetFields() {
     nameController.clear();
@@ -100,13 +114,12 @@ abstract class _CadUsuarioStoreBase with Store {
       phoneTouched &&
       emailTouched &&
       passwordTouched &&
-      urlPhotoTouched &&
+
       nameError == null &&
       cpfError == null &&
       phoneError == null &&
       emailError == null &&
-      passwordError == null &&
-      urlPhotoError == null;
+      passwordError == null ;
 
   @action
   void setName(String value) {
@@ -138,11 +151,8 @@ abstract class _CadUsuarioStoreBase with Store {
     password = value;
   }
 
-  @action
-  void setUrlPhoto(String value) {
-    urlPhotoTouched = true;
-    urlPhoto = value;
-  }
+ 
+
 
   @action
   Future<void> register() async {

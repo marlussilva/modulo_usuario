@@ -44,13 +44,6 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
       (_$passwordErrorComputed ??= Computed<String?>(() => super.passwordError,
               name: '_CadUsuarioStoreBase.passwordError'))
           .value;
-  Computed<String?>? _$urlPhotoErrorComputed;
-
-  @override
-  String? get urlPhotoError =>
-      (_$urlPhotoErrorComputed ??= Computed<String?>(() => super.urlPhotoError,
-              name: '_CadUsuarioStoreBase.urlPhotoError'))
-          .value;
   Computed<bool>? _$isFormValidComputed;
 
   @override
@@ -235,22 +228,6 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
     });
   }
 
-  late final _$urlPhotoTouchedAtom =
-      Atom(name: '_CadUsuarioStoreBase.urlPhotoTouched', context: context);
-
-  @override
-  bool get urlPhotoTouched {
-    _$urlPhotoTouchedAtom.reportRead();
-    return super.urlPhotoTouched;
-  }
-
-  @override
-  set urlPhotoTouched(bool value) {
-    _$urlPhotoTouchedAtom.reportWrite(value, super.urlPhotoTouched, () {
-      super.urlPhotoTouched = value;
-    });
-  }
-
   late final _$registerAsyncAction =
       AsyncAction('_CadUsuarioStoreBase.register', context: context);
 
@@ -318,17 +295,6 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
   }
 
   @override
-  void setUrlPhoto(String value) {
-    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
-        name: '_CadUsuarioStoreBase.setUrlPhoto');
-    try {
-      return super.setUrlPhoto(value);
-    } finally {
-      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 name: ${name},
@@ -342,13 +308,11 @@ cpfTouched: ${cpfTouched},
 phoneTouched: ${phoneTouched},
 emailTouched: ${emailTouched},
 passwordTouched: ${passwordTouched},
-urlPhotoTouched: ${urlPhotoTouched},
 nameError: ${nameError},
 cpfError: ${cpfError},
 phoneError: ${phoneError},
 emailError: ${emailError},
 passwordError: ${passwordError},
-urlPhotoError: ${urlPhotoError},
 isFormValid: ${isFormValid}
     ''';
   }

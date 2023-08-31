@@ -14,6 +14,7 @@ class CameraMacScreen extends StatefulWidget {
 
 class _CameraMacScreenState extends State<CameraMacScreen> {
   final cameraStore = GetIt.I<CameraMacOsStore>();
+
   @override
   void initState() {
     super.initState();
@@ -25,37 +26,44 @@ class _CameraMacScreenState extends State<CameraMacScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //  appBar: AppBar(title: Text('Camera Page')),
-      body: Observer(
-        builder: (_) {
-          if (cameraStore.selectedVideoDevice == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          return Container(
-            width: 200,
-            height: 200,
-            child: CameraMacOSView(
-              cameraMode: cameraStore.cameraMode,
-              deviceId: cameraStore.selectedVideoDevice,
-              //audioDeviceId: cameraStore
-              //   .selectedAudioDevice, // Isto é uma suposição; se o seu aplicativo não suportar áudio, ajuste conforme necessário.
-              enableAudio: cameraStore.enableAudio,
-              onCameraInizialized: (controller) {
-                cameraStore.macOSController = controller;
-              },
-              onCameraLoading: (error) {
-                return Center(child: Text("Erro ao carregar a câmera: $error"));
-              },
-              onCameraDestroyed: () {
-                return Center(child: Text("Câmera destruída."));
-              },
+      body: Stack(
+        children: [
+          Observer(
+            builder: (_) {
+              if (cameraStore.selectedVideoDevice == null) {
+                return Center(child: CircularProgressIndicator());
+              }
+      
+              return CameraMacOSView(
+                cameraMode: cameraStore.cameraMode,
+                deviceId: cameraStore.selectedVideoDevice,
+                //audioDeviceId: cameraStore.selectedAudioDevice,
+                enableAudio: cameraStore.enableAudio,
+                onCameraInizialized: (controller) {
+                  cameraStore.macOSController = controller;
+                },
+                onCameraLoading: (error) {
+                  return Center(
+                      child: Text("Erro ao carregar a câmera: $error"));
+                },
+                onCameraDestroyed: () {
+                  return Center(child: Text("Câmera destruída."));
+                },
+              );
+            },
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Center(
+              child: FloatingActionButton(
+                onPressed: cameraStore.onCameraButtonTap,
+                child: Icon(Icons.camera),
+              ),
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: cameraStore.onCameraButtonTap,
-        child: Icon(Icons.camera),
+          ),
+        ],
       ),
     );
   }

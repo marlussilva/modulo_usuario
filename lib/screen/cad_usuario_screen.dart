@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modulo_usuario/screen/camera/mac/camera_mac_screen.dart';
+import 'package:modulo_usuario/screen/popup/image_picker_dialog.dart';
 import 'package:modulo_usuario/store/cad_usuario_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modulo_usuario/util/image_assets.dart';
@@ -47,14 +48,11 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => CameraMacScreen());
+                        onTap: () async {
+                          ImagePickerDialog.showOptions(context);
                         },
                         child: Material(
-                          elevation:
-                              5.0, // Valor do relevo. Ajuste conforme sua necessidade.
+                          elevation: 5.0,
                           shape: CircleBorder(),
                           clipBehavior: Clip.antiAlias,
                           child: CircleAvatar(
@@ -63,7 +61,7 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
                             radius: 80,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
