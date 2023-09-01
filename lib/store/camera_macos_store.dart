@@ -82,6 +82,7 @@ abstract class _CameraMacOsStoreBase with Store {
         deviceType: CameraMacOSDeviceType.video,
       );
       print(videoDevices.length);
+      this.videoDevices = videoDevices;
       if (videoDevices.isNotEmpty) {
         selectedVideoDevice = videoDevices.first.deviceId;
       }

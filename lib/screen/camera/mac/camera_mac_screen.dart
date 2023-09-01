@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modulo_usuario/store/camera_macos_store.dart';
+import 'package:modulo_usuario/util/image_assets.dart';
 
 class CameraMacScreen extends StatefulWidget {
   const CameraMacScreen({super.key});
@@ -37,31 +38,50 @@ class _CameraMacScreenState extends State<CameraMacScreen> {
 
         // Se não tem um dispositivo de vídeo selecionado
         if (cameraStore.selectedVideoDevice == null) {
-          return Center(child: CircularProgressIndicator());
+          return Container(
+            width: 500,
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Centraliza horizontalmente
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // Centraliza verticalmente
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  child: Image.asset(
+                    ImageAssets.nocamera,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text("Nenhum dispositivo de vídeo detectado")
+              ],
+            ),
+          );
         }
 
         return Stack(
           children: [
-            Expanded(
-              child: CameraMacOSView(
-                cameraMode: cameraStore.cameraMode,
-                deviceId: cameraStore.selectedVideoDevice,
-                enableAudio: cameraStore.enableAudio,
-                onCameraInizialized: (controller) {
-                  cameraStore.macOSController = controller;
-                },
-                onCameraLoading: (error) {
-                  if (error == null) {
-                    return Center(child: CircularProgressIndicator());
-                  } else {
-                    return Center(
-                        child: Text("Erro ao carregar a câmera: $error"));
-                  }
-                },
-                onCameraDestroyed: () {
-                  return Center(child: Text("Câmera destruída."));
-                },
-              ),
+            CameraMacOSView(
+              cameraMode: cameraStore.cameraMode,
+              deviceId: cameraStore.selectedVideoDevice,
+              enableAudio: cameraStore.enableAudio,
+              onCameraInizialized: (controller) {
+                cameraStore.macOSController = controller;
+              },
+              onCameraLoading: (error) {
+                if (error == null) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(
+                      child: Text("Erro ao carregar a câmera: $error"));
+                }
+              },
+              onCameraDestroyed: () {
+                return Center(child: Text("Câmera destruída."));
+              },
             ),
             Positioned(
               left: 0,
