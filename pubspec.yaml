@@ -43,6 +43,7 @@ dependencies:
   brasil_fields: ^1.14.0
   camera_macos: ^0.0.6+5
   path_provider: ^2.1.1
+  image_picker: ^1.0.4
 
 
 
