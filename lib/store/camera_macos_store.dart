@@ -16,6 +16,30 @@ class CameraMacOsStore = _CameraMacOsStoreBase with _$CameraMacOsStore;
 
 abstract class _CameraMacOsStoreBase with Store {
   @observable
+  bool isInitializing =
+      true; // para indicar que a câmera está em processo de inicialização
+
+  @observable
+  bool hasTimedOut = false; // para indicar se atingiu o tempo limite
+
+  @action
+  void setInitializationTimeout() {
+    Future.delayed(Duration(seconds: 5), () {
+      if (selectedVideoDevice == null) {
+        hasTimedOut = true;
+        isInitializing = false;
+      }
+    });
+  }
+
+  @action
+  void setCameraInitialized() {
+    isInitializing = false;
+    hasTimedOut =
+        false; // garante que se a câmera inicializou, o timeout não seja aplicado
+  }
+
+  @observable
   CameraMacOSController? macOSController;
 
   @observable
@@ -61,6 +85,7 @@ abstract class _CameraMacOsStoreBase with Store {
       if (videoDevices.isNotEmpty) {
         selectedVideoDevice = videoDevices.first.deviceId;
       }
+      setCameraInitialized();
     } catch (e) {
       print(e);
       //showAlert(message: e.toString());

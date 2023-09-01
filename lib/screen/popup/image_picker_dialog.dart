@@ -10,19 +10,32 @@ class ImagePickerDialog {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Container(
-            height: 500,
-            width: 500,
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.8,
+              maxWidth: MediaQuery.of(context).size.width * 0.8,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 5,
+                  blurRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
             child: Stack(
-              alignment: Alignment.topRight,
               children: <Widget>[
-                (Platform.isMacOS) ? CameraMacScreen() : Container(),
+                CameraMacScreen(),
                 Positioned(
-                  right: 0,
+                  top: 10,
+                  right: 10,
                   child: IconButton(
-                    icon: Icon(Icons.close),
+                    icon: Icon(Icons.close, color: Colors.white60),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

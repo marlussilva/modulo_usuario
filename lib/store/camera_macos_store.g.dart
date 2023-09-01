@@ -17,6 +17,38 @@ mixin _$CameraMacOsStore on _CameraMacOsStoreBase, Store {
               name: '_CameraMacOsStoreBase.videoFilePath'))
       .value;
 
+  late final _$isInitializingAtom =
+      Atom(name: '_CameraMacOsStoreBase.isInitializing', context: context);
+
+  @override
+  bool get isInitializing {
+    _$isInitializingAtom.reportRead();
+    return super.isInitializing;
+  }
+
+  @override
+  set isInitializing(bool value) {
+    _$isInitializingAtom.reportWrite(value, super.isInitializing, () {
+      super.isInitializing = value;
+    });
+  }
+
+  late final _$hasTimedOutAtom =
+      Atom(name: '_CameraMacOsStoreBase.hasTimedOut', context: context);
+
+  @override
+  bool get hasTimedOut {
+    _$hasTimedOutAtom.reportRead();
+    return super.hasTimedOut;
+  }
+
+  @override
+  set hasTimedOut(bool value) {
+    _$hasTimedOutAtom.reportWrite(value, super.hasTimedOut, () {
+      super.hasTimedOut = value;
+    });
+  }
+
   late final _$macOSControllerAtom =
       Atom(name: '_CameraMacOsStoreBase.macOSController', context: context);
 
@@ -239,6 +271,28 @@ mixin _$CameraMacOsStore on _CameraMacOsStoreBase, Store {
       ActionController(name: '_CameraMacOsStoreBase', context: context);
 
   @override
+  void setInitializationTimeout() {
+    final _$actionInfo = _$_CameraMacOsStoreBaseActionController.startAction(
+        name: '_CameraMacOsStoreBase.setInitializationTimeout');
+    try {
+      return super.setInitializationTimeout();
+    } finally {
+      _$_CameraMacOsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCameraInitialized() {
+    final _$actionInfo = _$_CameraMacOsStoreBaseActionController.startAction(
+        name: '_CameraMacOsStoreBase.setCameraInitialized');
+    try {
+      return super.setCameraInitialized();
+    } finally {
+      _$_CameraMacOsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeCameraMode() {
     final _$actionInfo = _$_CameraMacOsStoreBaseActionController.startAction(
         name: '_CameraMacOsStoreBase.changeCameraMode');
@@ -252,6 +306,8 @@ mixin _$CameraMacOsStore on _CameraMacOsStoreBase, Store {
   @override
   String toString() {
     return '''
+isInitializing: ${isInitializing},
+hasTimedOut: ${hasTimedOut},
 macOSController: ${macOSController},
 cameraMode: ${cameraMode},
 durationValue: ${durationValue},
