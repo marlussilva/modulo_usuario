@@ -6,7 +6,9 @@ import 'package:camera_macos/camera_macos_file.dart';
 import 'package:camera_macos/camera_macos_platform_interface.dart';
 import 'package:camera_macos/camera_macos_view.dart';
 import 'package:camera_macos/exceptions.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:modulo_usuario/store/avatar_store.dart';
 import 'package:path/path.dart' as pathJoiner;
 import 'package:path_provider/path_provider.dart';
 
@@ -81,7 +83,7 @@ abstract class _CameraMacOsStoreBase with Store {
           await CameraMacOS.instance.listDevices(
         deviceType: CameraMacOSDeviceType.video,
       );
-      print(videoDevices.length);
+      //  print(videoDevices.length);
       this.videoDevices = videoDevices;
       if (videoDevices.isNotEmpty) {
         selectedVideoDevice = videoDevices.first.deviceId;
@@ -144,6 +146,8 @@ abstract class _CameraMacOsStoreBase with Store {
             CameraMacOSFile? imageData = await macOSController!.takePicture();
             if (imageData != null) {
               lastImagePreviewData = imageData.bytes;
+              var avatarStore = GetIt.I<AvatarStore>();
+              avatarStore.setAvatarSeletected(lastImagePreviewData);
             }
             break;
           case CameraMacOSMode.video:

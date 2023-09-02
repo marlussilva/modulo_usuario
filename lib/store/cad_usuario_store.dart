@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:modulo_usuario/http/arquivos_services.dart';
+import 'package:modulo_usuario/store/avatar_store.dart';
 part 'cad_usuario_store.g.dart';
 
 class CadUsuarioStore = _CadUsuarioStoreBase with _$CadUsuarioStore;
@@ -52,8 +55,6 @@ abstract class _CadUsuarioStoreBase with Store {
   @observable
   bool passwordTouched = false;
 
-
-
   @computed
   String? get nameError =>
       nameTouched && (name?.isEmpty ?? true) ? "Nome é obrigatório!" : null;
@@ -87,8 +88,6 @@ abstract class _CadUsuarioStoreBase with Store {
       ? "Senha é obrigatória!"
       : null;
 
-
-
   void resetFields() {
     nameController.clear();
     cpfController.clear();
@@ -114,12 +113,11 @@ abstract class _CadUsuarioStoreBase with Store {
       phoneTouched &&
       emailTouched &&
       passwordTouched &&
-
       nameError == null &&
       cpfError == null &&
       phoneError == null &&
       emailError == null &&
-      passwordError == null ;
+      passwordError == null;
 
   @action
   void setName(String value) {
@@ -151,15 +149,17 @@ abstract class _CadUsuarioStoreBase with Store {
     password = value;
   }
 
- 
-
-
   @action
-  Future<void> register() async {
+  Future<void> save() async {
     if (!isFormValid) {
       // Você pode adicionar uma mensagem geral aqui, se desejar
       return;
     }
     // Processo de registro
+    var avatar = GetIt.I<AvatarStore>();
+    var image = avatar.avatarSelected;
+    if (image != null && cpf != null) {
+      UserServices.saveUserAvatar(image, cpf!);
+    }
   }
 }

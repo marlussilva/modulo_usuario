@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modulo_usuario/screen/camera/mac/camera_mac_screen.dart';
 import 'package:modulo_usuario/screen/popup/image_picker_dialog.dart';
+import 'package:modulo_usuario/store/avatar_store.dart';
 import 'package:modulo_usuario/store/cad_usuario_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modulo_usuario/store/camera_macos_store.dart';
@@ -140,7 +141,7 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
                 Observer(builder: (_) {
                   return Center(
                     child: ElevatedButton(
-                      onPressed: store.isFormValid ? store.register : null,
+                      onPressed: store.isFormValid ? store.save : null,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -165,8 +166,10 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
 
   ImageProvider avatar() {
     if (Platform.isMacOS) {
-      if (storeCamera.lastImagePreviewData != null) {
-        return MemoryImage(storeCamera.lastImagePreviewData!);
+      var avtStore = GetIt.I<AvatarStore>();
+      var avatar = avtStore.avatarSelected;
+      if (avatar != null) {
+        return MemoryImage(avatar);
       } else {
         return AssetImage(ImageAssets.person);
       }

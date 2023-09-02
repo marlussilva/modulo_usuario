@@ -228,12 +228,12 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
     });
   }
 
-  late final _$registerAsyncAction =
-      AsyncAction('_CadUsuarioStoreBase.register', context: context);
+  late final _$saveAsyncAction =
+      AsyncAction('_CadUsuarioStoreBase.save', context: context);
 
   @override
-  Future<void> register() {
-    return _$registerAsyncAction.run(() => super.register());
+  Future<void> save() {
+    return _$saveAsyncAction.run(() => super.save());
   }
 
   late final _$_CadUsuarioStoreBaseActionController =

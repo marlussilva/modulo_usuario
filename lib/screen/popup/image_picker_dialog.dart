@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modulo_usuario/screen/camera/mac/camera_mac_screen.dart';
+import 'package:modulo_usuario/store/avatar_store.dart';
 
 class ImagePickerDialog {
   static void showCamera(BuildContext context) {
@@ -69,9 +72,17 @@ class ImagePickerDialog {
                 ListTile(
                   leading: Icon(Icons.photo_library),
                   title: Text('Escolher da galeria'),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.of(context).pop();
                     // Aqui, você pode adicionar a lógica para abrir a galeria
+                    ImagePicker imagePicker = ImagePicker();
+                    var image = await imagePicker.pickImage(
+                        source: ImageSource.gallery);
+                    var avtStore = GetIt.I<AvatarStore>();
+                    var bytes = await image?.readAsBytes();
+                    if (bytes != null) {
+                      avtStore.setAvatarSeletected(bytes);
+                    }
                   },
                 ),
               ],
