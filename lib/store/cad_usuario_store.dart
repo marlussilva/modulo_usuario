@@ -163,14 +163,14 @@ abstract class _CadUsuarioStoreBase with Store {
     if (image != null && cpf != null) {
       await ArquivosServices.saveUserAvatar(image, cpf!);
     }
-    var user = User();
+    /* var user = User();
     user.cpf = cpf;
     user.email = email;
     user.name = name;
     user.password = password;
     user.urlPhoto = '$cpf.jpg';
     user.phone = phone;
-    bool res = await UserService.save(user);
-    return res;
+    bool res = await UserService.save(user); */
+    return true;
   }
 }

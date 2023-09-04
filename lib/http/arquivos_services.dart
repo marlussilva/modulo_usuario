@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:modulo_usuario/util/utilidades.dart';
 import 'package:my_api/config/my_config.dart';
 
 class ArquivosServices {
@@ -9,6 +10,7 @@ class ArquivosServices {
 
   static Future<bool> saveUserAvatar(
       Uint8List imageBytes, String fileName) async {
+    imageBytes = Utilidades.convertToJpg(imageBytes);
     try {
       var formData = FormData.fromMap({
         'file': MultipartFile.fromBytes(imageBytes, filename: '$fileName.jpg'),
