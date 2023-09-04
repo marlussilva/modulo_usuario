@@ -35,6 +35,20 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
     super.dispose();
   }
 
+  Future<void> _handleSave(BuildContext context) async {
+    bool success = await store.save();
+    var avatar = GetIt.I<AvatarStore>();
+    if (success) {
+      store.resetFields();
+      avatar.setAvatarSeletected(null);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Usuário cadastrado com sucesso")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Erro .")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +155,8 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
                 Observer(builder: (_) {
                   return Center(
                     child: ElevatedButton(
-                      onPressed: store.isFormValid ? store.save : null,
+                      onPressed:
+                          store.isFormValid ? () => _handleSave(context) : null,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

@@ -1,25 +1,23 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:my_api/config/my_config.dart';
 
-class UserServices {
+class ArquivosServices {
   static final Dio _dio = Dio();
-  static const URL = 'http://localhost:8080/user/';
+  static const URL = '${MyConfig.URL_MY_API}/user/';
 
   static Future<bool> saveUserAvatar(
       Uint8List imageBytes, String fileName) async {
-    print("dentro 1");
     try {
-      // Configurando os headers se necessário (ajuste conforme a necessidade)
-      var headers = {
-        'Content-Type': 'application/json',
-        'file-name': fileName,
-      };
-      print("dentro 2");
-      // Realizando a requisição POST
-      var response = await _dio.post(URL + "avatar",
-          data: json.encode(imageBytes), options: Options(headers: headers));
-      print("dentro 3");
+      var formData = FormData.fromMap({
+        'file': MultipartFile.fromBytes(imageBytes, filename: '$fileName.jpg'),
+      });
+
+      var urlArquivos = '${MyConfig.URL_SERVER_FILE_IP}/upload/';
+
+      var response = await _dio.post(urlArquivos, data: formData);
+
       if (response.statusCode == 200) {
         print('Avatar salvo com sucesso!');
         return true;
@@ -28,7 +26,6 @@ class UserServices {
         return false;
       }
     } on DioException catch (e) {
-      // Tratando erros específicos do Dio
       if (e.response != null) {
         print('Erro ao salvar avatar: ${e.response!.data}');
       } else {
@@ -36,7 +33,6 @@ class UserServices {
       }
       return false;
     } catch (e) {
-      // Tratando outros erros não previstos
       print('Ocorreu um erro inesperado: $e');
       return false;
     }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:modulo_usuario/http/arquivos_services.dart';
+import 'package:modulo_usuario/http/user_services.dart';
 import 'package:modulo_usuario/store/avatar_store.dart';
+import 'package:my_api/model/user.dart';
 part 'cad_usuario_store.g.dart';
 
 class CadUsuarioStore = _CadUsuarioStoreBase with _$CadUsuarioStore;
@@ -150,16 +152,25 @@ abstract class _CadUsuarioStoreBase with Store {
   }
 
   @action
-  Future<void> save() async {
+  Future<bool> save() async {
     if (!isFormValid) {
       // Você pode adicionar uma mensagem geral aqui, se desejar
-      return;
+      return false;
     }
     // Processo de registro
     var avatar = GetIt.I<AvatarStore>();
     var image = avatar.avatarSelected;
     if (image != null && cpf != null) {
-      UserServices.saveUserAvatar(image, cpf!);
+      await ArquivosServices.saveUserAvatar(image, cpf!);
     }
+    var user = User();
+    user.cpf = cpf;
+    user.email = email;
+    user.name = name;
+    user.password = password;
+    user.urlPhoto = '$cpf.jpg';
+    user.phone = phone;
+    bool res = await UserService.save(user);
+    return res;
   }
 }

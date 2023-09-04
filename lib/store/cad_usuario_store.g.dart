@@ -232,7 +232,7 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
       AsyncAction('_CadUsuarioStoreBase.save', context: context);
 
   @override
-  Future<void> save() {
+  Future<bool> save() {
     return _$saveAsyncAction.run(() => super.save());
   }
 
