@@ -30,9 +30,9 @@ abstract class _LoginStoreBase with Store {
   String? get passwordError => passwordTouched && (password?.isEmpty ?? true)
       ? "Senha é obrigatória!"
       : null;
-
   @computed
-  bool get isFormValid => cpfError == null && passwordError == null;
+  bool get isFormValid =>
+      (cpf?.isNotEmpty ?? false) && (password?.isNotEmpty ?? false);
 
   @action
   void setCpf(String value) {
@@ -65,7 +65,7 @@ abstract class _LoginStoreBase with Store {
   @action
   Future<bool> login() async {
     loading = true;
-    await Future.delayed(Duration(seconds: 5));
+    // await Future.delayed(Duration(seconds: 5));
     var cpfAux = cpf?.replaceAll('.', '').replaceAll('-', '');
     final success = await UserService.authenticate(cpfAux!, password!);
 

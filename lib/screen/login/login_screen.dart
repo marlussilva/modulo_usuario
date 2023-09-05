@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modulo_usuario/screen/alert/custom_alert.dart';
 import 'package:modulo_usuario/store/login_store.dart';
 import 'package:modulo_usuario/util/image_assets.dart';
 
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    store.resetFields();
   }
 
   Future<void> handleSave(context) async {
@@ -31,8 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Login realizado com sucesso")));
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Erro .")));
+      CustomAlert(
+              title: "Erro de autenticação",
+              message:
+                  "Credenciais inválidas. Por favor, verifique e tente novamente.",
+              alertType: AlertType.error)
+          .show(context);
     }
   }
 
