@@ -33,4 +33,41 @@ class UserService {
       return false;
     }
   }
+
+  static Future<User?> getByCpf(String cpf) async {
+    try {
+      final response = await _dio.post('${URL}checkcpf', data: {'cpf': cpf});
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['exists']) {
+          return User.fromMap(responseData['user']);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Ocorreu um erro na requisição: $e');
+      return null;
+    }
+  }
+
+  static Future<bool> authenticate(String cpf, String password) async {
+    try {
+      final response = await _dio
+          .post('${URL}login', data: {'cpf': cpf, 'password': password});
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        return responseData['authenticated'];
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Ocorreu um erro na requisição: $e');
+      return false;
+    }
+  }
 }

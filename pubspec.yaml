@@ -72,3 +72,5 @@ flutter:
   assets:
     - assets/image/person.png
     - assets/image/nocamera.png
+    - assets/image/smart.png
+    - assets/image/inicial.png

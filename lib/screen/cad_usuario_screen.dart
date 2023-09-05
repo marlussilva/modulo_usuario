@@ -52,127 +52,136 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Usuário')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: <Widget>[
-                Observer(builder: (_) {
-                  return Tooltip(
-                    message: "Clique para adicionar uma imagem",
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            ImagePickerDialog.showOptions(context);
-                          },
-                          child: Material(
-                            elevation: 5.0,
-                            shape: CircleBorder(),
-                            clipBehavior: Clip.antiAlias,
-                            child: CircleAvatar(
-                              backgroundImage: avatar(),
-                              backgroundColor: Colors.transparent,
-                              radius: 80,
-                            ),
-                          ),
+      appBar: AppBar(
+        title: Text('Cadastro de Usuário'),
+        backgroundColor: Colors.blue,
+      ),
+      body: Card(
+        child: ListView(
+          children: <Widget>[
+            Observer(builder: (_) {
+              return Tooltip(
+                message: "Clique para adicionar uma imagem",
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        ImagePickerDialog.showOptions(context);
+                      },
+                      child: Material(
+                        elevation: 5.0,
+                        shape: CircleBorder(),
+                        clipBehavior: Clip.antiAlias,
+                        child: CircleAvatar(
+                          backgroundImage: avatar(),
+                          backgroundColor: Colors.transparent,
+                          radius: 60,
                         ),
-                      ],
-                    ),
-                  );
-                }),
-                Observer(
-                  builder: (_) => TextFormField(
-                    controller: store.nameController,
-                    onChanged: (value) => store.setName(value),
-                    decoration: InputDecoration(
-                      labelText: 'Nome',
-                      errorText: store.nameError,
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                  ),
-                ),
-                Observer(
-                  builder: (_) => TextFormField(
-                    controller: store.cpfController,
-                    onChanged: (value) => store.setCpf(value),
-                    decoration: InputDecoration(
-                      labelText: 'CPF',
-                      errorText: store.cpfError,
-                      prefixIcon: Icon(Icons.badge),
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CpfInputFormatter(),
-                    ],
-                  ),
-                ),
-                Observer(
-                  builder: (_) => TextFormField(
-                    controller: store.phoneController,
-                    onChanged: (value) => store.setPhone(value),
-                    decoration: InputDecoration(
-                      labelText: 'Telefone',
-                      errorText: store.phoneError,
-                      prefixIcon: Icon(Icons.phone),
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter(),
-                    ],
-                  ),
-                ),
-                Observer(
-                  builder: (_) => TextFormField(
-                    controller: store.emailController,
-                    onChanged: (value) => store.setEmail(value),
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      errorText: store.emailError,
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                ),
-                Observer(
-                  builder: (_) => TextFormField(
-                    controller: store.passwordController,
-                    onChanged: (value) => store.setPassword(value),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      errorText: store.passwordError,
-                      prefixIcon: Icon(Icons.lock),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Observer(builder: (_) {
-                  return Center(
-                    child: ElevatedButton(
-                      onPressed:
-                          store.isFormValid ? () => _handleSave(context) : null,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Cadastrar'),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Icon(Icons.save)
-                        ],
                       ),
                     ),
-                  );
-                }),
-              ],
+                  ],
+                ),
+              );
+            }),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.nameController,
+                onChanged: (value) => store.setName(value),
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  errorText: store.nameError,
+                  prefixIcon: Icon(Icons.person),
+                ),
+              ),
             ),
-          ),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.cpfController,
+                onChanged: (value) => store.setCpf(value),
+                decoration: InputDecoration(
+                  labelText: 'CPF',
+                  errorText: store.cpfError,
+                  prefixIcon: Icon(Icons.badge),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CpfInputFormatter(),
+                ],
+              ),
+            ),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.phoneController,
+                onChanged: (value) => store.setPhone(value),
+                decoration: InputDecoration(
+                  labelText: 'Telefone',
+                  errorText: store.phoneError,
+                  prefixIcon: Icon(Icons.phone),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  TelefoneInputFormatter(),
+                ],
+              ),
+            ),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.emailController,
+                onChanged: (value) => store.setEmail(value),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  errorText: store.emailError,
+                  prefixIcon: Icon(Icons.email),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+            ),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.passwordController,
+                onChanged: (value) => store.setPassword(value),
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  errorText: store.passwordError,
+                  prefixIcon: Icon(Icons.lock),
+                ),
+              ),
+            ),
+            Observer(
+              builder: (_) => TextFormField(
+                controller: store.confirmPasswordController,
+                onChanged: (value) => store.setConfirmPassword(value),
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirmação de senha',
+                  errorText: store.confirmPasswordError,
+                  prefixIcon: Icon(Icons.lock_outline),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Observer(builder: (_) {
+              return Center(
+                child: ElevatedButton(
+                  onPressed:
+                      store.isFormValid ? () => _handleSave(context) : null,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Cadastrar'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Icon(Icons.save)
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );

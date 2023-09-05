@@ -5,6 +5,7 @@ import 'package:modulo_usuario/http/arquivos_services.dart';
 import 'package:modulo_usuario/http/user_services.dart';
 import 'package:modulo_usuario/store/avatar_store.dart';
 import 'package:my_api/model/user.dart';
+
 part 'cad_usuario_store.g.dart';
 
 class CadUsuarioStore = _CadUsuarioStoreBase with _$CadUsuarioStore;
@@ -16,6 +17,7 @@ abstract class _CadUsuarioStoreBase with Store {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final urlPhotoController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   // Expressões regulares
   final _cpfRegex = RegExp(r"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
@@ -43,6 +45,9 @@ abstract class _CadUsuarioStoreBase with Store {
   String? urlPhoto;
 
   @observable
+  String? confirmPassword;
+
+  @observable
   bool nameTouched = false;
 
   @observable
@@ -57,6 +62,12 @@ abstract class _CadUsuarioStoreBase with Store {
   @observable
   bool passwordTouched = false;
 
+  @observable
+  bool confirmPasswordTouched = false;
+
+  @observable
+  bool cpfExists = false;
+
   @computed
   String? get nameError =>
       nameTouched && (name?.isEmpty ?? true) ? "Nome é obrigatório!" : null;
@@ -65,6 +76,7 @@ abstract class _CadUsuarioStoreBase with Store {
   String? get cpfError {
     if (cpfTouched && (cpf?.isEmpty ?? true)) return "CPF é obrigatório!";
     if (cpfTouched && !_cpfRegex.hasMatch(cpf!)) return "CPF inválido!";
+    if (cpfExists) return "CPF já cadastrado!";
     return null;
   }
 
@@ -90,6 +102,14 @@ abstract class _CadUsuarioStoreBase with Store {
       ? "Senha é obrigatória!"
       : null;
 
+  @computed
+  String? get confirmPasswordError =>
+      confirmPasswordTouched && (confirmPassword?.isEmpty ?? true)
+          ? "Confirmação de senha é obrigatória!"
+          : confirmPassword != password
+              ? "As senhas não coincidem!"
+              : null;
+
   void resetFields() {
     nameController.clear();
     cpfController.clear();
@@ -97,6 +117,14 @@ abstract class _CadUsuarioStoreBase with Store {
     emailController.clear();
     passwordController.clear();
     urlPhotoController.clear();
+    confirmPasswordController.clear();
+    nameTouched = false;
+    cpfTouched = false;
+    phoneTouched = false;
+    emailTouched = false;
+    passwordTouched = false;
+    confirmPasswordTouched = false;
+    cpfExists = false;
   }
 
   void dispose() {
@@ -106,6 +134,7 @@ abstract class _CadUsuarioStoreBase with Store {
     emailController.dispose();
     passwordController.dispose();
     urlPhotoController.dispose();
+    confirmPasswordController.dispose();
   }
 
   @computed
@@ -115,11 +144,13 @@ abstract class _CadUsuarioStoreBase with Store {
       phoneTouched &&
       emailTouched &&
       passwordTouched &&
+      confirmPasswordTouched &&
       nameError == null &&
       cpfError == null &&
       phoneError == null &&
       emailError == null &&
-      passwordError == null;
+      passwordError == null &&
+      confirmPasswordError == null;
 
   @action
   void setName(String value) {
@@ -152,25 +183,53 @@ abstract class _CadUsuarioStoreBase with Store {
   }
 
   @action
+  void setConfirmPassword(String value) {
+    confirmPasswordTouched = true;
+    confirmPassword = value;
+  }
+
+  @action
+  void setCpfExists(bool value) {
+    cpfExists = value;
+  }
+
+  @action
   Future<bool> save() async {
     if (!isFormValid) {
-      // Você pode adicionar uma mensagem geral aqui, se desejar
       return false;
     }
-    // Processo de registro
+
     var avatar = GetIt.I<AvatarStore>();
     var image = avatar.avatarSelected;
     if (image != null && cpf != null) {
-      await ArquivosServices.saveUserAvatar(image, cpf!);
+      var aux = cpf?.replaceAll('.', '').replaceAll('-', '');
+      await ArquivosServices.saveUserAvatar(image, aux!);
     }
-    /* var user = User();
-    user.cpf = cpf;
+
+    var user = User();
+    user.cpf = cpf?.replaceAll('.', '').replaceAll('-', '');
     user.email = email;
     user.name = name;
     user.password = password;
-    user.urlPhoto = '$cpf.jpg';
-    user.phone = phone;
-    bool res = await UserService.save(user); */
-    return true;
+    user.urlPhoto = '${user.cpf}.jpg';
+    user.phone = phone
+        ?.replaceAll('(', '')
+        .replaceAll(')', '')
+        .replaceAll('-', '')
+        .replaceAll(' ', '');
+
+    bool res = await UserService.save(user);
+    return res;
+  }
+
+  _CadUsuarioStoreBase() {
+    reaction((_) => cpf, (String? cpf) async {
+      if (_cpfRegex.hasMatch(cpf ?? '')) {
+        var aux = cpf?.replaceAll('.', '').replaceAll('-', '');
+        print("cpf a ser consultado $aux");
+        var user = await UserService.getByCpf(aux!);
+        setCpfExists(user != null);
+      }
+    });
   }
 }

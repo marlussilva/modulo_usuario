@@ -44,6 +44,13 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
       (_$passwordErrorComputed ??= Computed<String?>(() => super.passwordError,
               name: '_CadUsuarioStoreBase.passwordError'))
           .value;
+  Computed<String?>? _$confirmPasswordErrorComputed;
+
+  @override
+  String? get confirmPasswordError => (_$confirmPasswordErrorComputed ??=
+          Computed<String?>(() => super.confirmPasswordError,
+              name: '_CadUsuarioStoreBase.confirmPasswordError'))
+      .value;
   Computed<bool>? _$isFormValidComputed;
 
   @override
@@ -148,6 +155,22 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
     });
   }
 
+  late final _$confirmPasswordAtom =
+      Atom(name: '_CadUsuarioStoreBase.confirmPassword', context: context);
+
+  @override
+  String? get confirmPassword {
+    _$confirmPasswordAtom.reportRead();
+    return super.confirmPassword;
+  }
+
+  @override
+  set confirmPassword(String? value) {
+    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
+      super.confirmPassword = value;
+    });
+  }
+
   late final _$nameTouchedAtom =
       Atom(name: '_CadUsuarioStoreBase.nameTouched', context: context);
 
@@ -228,6 +251,39 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
     });
   }
 
+  late final _$confirmPasswordTouchedAtom = Atom(
+      name: '_CadUsuarioStoreBase.confirmPasswordTouched', context: context);
+
+  @override
+  bool get confirmPasswordTouched {
+    _$confirmPasswordTouchedAtom.reportRead();
+    return super.confirmPasswordTouched;
+  }
+
+  @override
+  set confirmPasswordTouched(bool value) {
+    _$confirmPasswordTouchedAtom
+        .reportWrite(value, super.confirmPasswordTouched, () {
+      super.confirmPasswordTouched = value;
+    });
+  }
+
+  late final _$cpfExistsAtom =
+      Atom(name: '_CadUsuarioStoreBase.cpfExists', context: context);
+
+  @override
+  bool get cpfExists {
+    _$cpfExistsAtom.reportRead();
+    return super.cpfExists;
+  }
+
+  @override
+  set cpfExists(bool value) {
+    _$cpfExistsAtom.reportWrite(value, super.cpfExists, () {
+      super.cpfExists = value;
+    });
+  }
+
   late final _$saveAsyncAction =
       AsyncAction('_CadUsuarioStoreBase.save', context: context);
 
@@ -295,6 +351,28 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
   }
 
   @override
+  void setConfirmPassword(String value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setConfirmPassword');
+    try {
+      return super.setConfirmPassword(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCpfExists(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setCpfExists');
+    try {
+      return super.setCpfExists(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 name: ${name},
@@ -303,16 +381,20 @@ phone: ${phone},
 email: ${email},
 password: ${password},
 urlPhoto: ${urlPhoto},
+confirmPassword: ${confirmPassword},
 nameTouched: ${nameTouched},
 cpfTouched: ${cpfTouched},
 phoneTouched: ${phoneTouched},
 emailTouched: ${emailTouched},
 passwordTouched: ${passwordTouched},
+confirmPasswordTouched: ${confirmPasswordTouched},
+cpfExists: ${cpfExists},
 nameError: ${nameError},
 cpfError: ${cpfError},
 phoneError: ${phoneError},
 emailError: ${emailError},
 passwordError: ${passwordError},
+confirmPasswordError: ${confirmPasswordError},
 isFormValid: ${isFormValid}
     ''';
   }
