@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:modulo_usuario/screen/cad_usuario_screen.dart';
-import 'package:modulo_usuario/screen/camera/mac/camera_mac_screen.dart';
 import 'package:modulo_usuario/screen/login/login_screen.dart';
 import 'package:modulo_usuario/screen/theme/app_theme.dart';
 import 'package:modulo_usuario/util/initialization.dart';
