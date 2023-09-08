@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:modulo_usuario/store/global_store.dart';
 import 'package:my_api/config/my_config.dart';
 import 'package:my_api/model/user.dart';
 
@@ -23,6 +25,10 @@ class UserService {
 
       if (response.statusCode == 200) {
         print('User salvo com sucesso!');
+        final responseData = response.data;
+        var user = User.fromMap(responseData['user']);
+        var storeGlobal = GetIt.I<GlobalStore>();
+        storeGlobal.setUser(user);
         return true;
       } else {
         print('Erro ao salvar Environment: ${response.statusCode}');
@@ -61,6 +67,10 @@ class UserService {
 
       if (response.statusCode == 200) {
         final responseData = response.data;
+        // print(responseData['user']);
+        var user = User.fromMap(responseData['user']);
+        var storeGlobal = GetIt.I<GlobalStore>();
+        storeGlobal.setUser(user);
         return responseData['authenticated'];
       } else {
         return false;

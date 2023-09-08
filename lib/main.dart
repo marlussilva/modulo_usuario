@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:modulo_usuario/screen/cad_usuario_screen.dart';
+import 'package:modulo_usuario/screen/usuario/cad_usuario_screen.dart';
 import 'package:modulo_usuario/screen/login/login_screen.dart';
 import 'package:modulo_usuario/screen/theme/app_theme.dart';
 import 'package:modulo_usuario/util/initialization.dart';
 
 void main() {
-  Initialization.singleton();
+  InitializationUserModule.singleton();
   runApp(const MyApp());
 }
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.getTheme(),
-      home: LoginScreen(),
+      home: CadUsuarioScreen(),
     );
   }
 }

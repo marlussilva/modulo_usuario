@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modulo_usuario/screen/alert/custom_alert.dart';
+import 'package:modulo_usuario/store/global_store.dart';
 import 'package:modulo_usuario/store/login_store.dart';
 import 'package:modulo_usuario/util/image_assets.dart';
 
@@ -30,6 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> handleSave(context) async {
     var success = await store.login();
     if (success) {
+      var s = GetIt.I<GlobalStore>();
+      print(s.user);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Login realizado com sucesso")));
     } else {

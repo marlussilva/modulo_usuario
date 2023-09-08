@@ -4,12 +4,15 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:modulo_usuario/screen/camera/mac/camera_mac_screen.dart';
+import 'package:modulo_usuario/screen/alert/custom_alert.dart';
+
 import 'package:modulo_usuario/screen/popup/image_picker_dialog.dart';
 import 'package:modulo_usuario/store/avatar_store.dart';
 import 'package:modulo_usuario/store/cad_usuario_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modulo_usuario/store/camera_macos_store.dart';
+import 'package:modulo_usuario/store/global_store.dart';
+
 import 'package:modulo_usuario/util/image_assets.dart';
 
 class CadUsuarioScreen extends StatefulWidget {
@@ -41,8 +44,15 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
     if (success) {
       store.resetFields();
       avatar.setAvatarSeletected(null);
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Usuário cadastrado com sucesso")));
+
+      var storeGlobal = GetIt.I<GlobalStore>();
+      print(storeGlobal.user);
+
+      CustomAlert(
+              title: "Cadastro",
+              message: "Registro de ${storeGlobal.user?.name} completo!",
+              alertType: AlertType.success)
+          .show(context);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Erro .")));
