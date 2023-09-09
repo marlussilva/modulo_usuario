@@ -58,6 +58,117 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: '_CadUsuarioStoreBase.isFormValid'))
           .value;
+  Computed<Color>? _$nameIconColorComputed;
+
+  @override
+  Color get nameIconColor =>
+      (_$nameIconColorComputed ??= Computed<Color>(() => super.nameIconColor,
+              name: '_CadUsuarioStoreBase.nameIconColor'))
+          .value;
+  Computed<Color>? _$cpfIconColorComputed;
+
+  @override
+  Color get cpfIconColor =>
+      (_$cpfIconColorComputed ??= Computed<Color>(() => super.cpfIconColor,
+              name: '_CadUsuarioStoreBase.cpfIconColor'))
+          .value;
+
+  late final _$nameFocusedAtom =
+      Atom(name: '_CadUsuarioStoreBase.nameFocused', context: context);
+
+  @override
+  bool get nameFocused {
+    _$nameFocusedAtom.reportRead();
+    return super.nameFocused;
+  }
+
+  @override
+  set nameFocused(bool value) {
+    _$nameFocusedAtom.reportWrite(value, super.nameFocused, () {
+      super.nameFocused = value;
+    });
+  }
+
+  late final _$cpfFocusedAtom =
+      Atom(name: '_CadUsuarioStoreBase.cpfFocused', context: context);
+
+  @override
+  bool get cpfFocused {
+    _$cpfFocusedAtom.reportRead();
+    return super.cpfFocused;
+  }
+
+  @override
+  set cpfFocused(bool value) {
+    _$cpfFocusedAtom.reportWrite(value, super.cpfFocused, () {
+      super.cpfFocused = value;
+    });
+  }
+
+  late final _$phoneFocusedAtom =
+      Atom(name: '_CadUsuarioStoreBase.phoneFocused', context: context);
+
+  @override
+  bool get phoneFocused {
+    _$phoneFocusedAtom.reportRead();
+    return super.phoneFocused;
+  }
+
+  @override
+  set phoneFocused(bool value) {
+    _$phoneFocusedAtom.reportWrite(value, super.phoneFocused, () {
+      super.phoneFocused = value;
+    });
+  }
+
+  late final _$emailFocusedAtom =
+      Atom(name: '_CadUsuarioStoreBase.emailFocused', context: context);
+
+  @override
+  bool get emailFocused {
+    _$emailFocusedAtom.reportRead();
+    return super.emailFocused;
+  }
+
+  @override
+  set emailFocused(bool value) {
+    _$emailFocusedAtom.reportWrite(value, super.emailFocused, () {
+      super.emailFocused = value;
+    });
+  }
+
+  late final _$passwordFocusedAtom =
+      Atom(name: '_CadUsuarioStoreBase.passwordFocused', context: context);
+
+  @override
+  bool get passwordFocused {
+    _$passwordFocusedAtom.reportRead();
+    return super.passwordFocused;
+  }
+
+  @override
+  set passwordFocused(bool value) {
+    _$passwordFocusedAtom.reportWrite(value, super.passwordFocused, () {
+      super.passwordFocused = value;
+    });
+  }
+
+  late final _$confirmPasswordFocusedAtom = Atom(
+      name: '_CadUsuarioStoreBase.confirmPasswordFocused', context: context);
+
+  @override
+  bool get confirmPasswordFocused {
+    _$confirmPasswordFocusedAtom.reportRead();
+    return super.confirmPasswordFocused;
+  }
+
+  @override
+  set confirmPasswordFocused(bool value) {
+    _$confirmPasswordFocusedAtom
+        .reportWrite(value, super.confirmPasswordFocused, () {
+      super.confirmPasswordFocused = value;
+    });
+  }
 
   late final _$nameAtom =
       Atom(name: '_CadUsuarioStoreBase.name', context: context);
@@ -373,8 +484,80 @@ mixin _$CadUsuarioStore on _CadUsuarioStoreBase, Store {
   }
 
   @override
+  void setNameFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setNameFocus');
+    try {
+      return super.setNameFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCpfFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setCpfFocus');
+    try {
+      return super.setCpfFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPhoneFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setPhoneFocus');
+    try {
+      return super.setPhoneFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setEmailFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setEmailFocus');
+    try {
+      return super.setEmailFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPasswordFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setPasswordFocus');
+    try {
+      return super.setPasswordFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setConfirmPasswordFocus(bool value) {
+    final _$actionInfo = _$_CadUsuarioStoreBaseActionController.startAction(
+        name: '_CadUsuarioStoreBase.setConfirmPasswordFocus');
+    try {
+      return super.setConfirmPasswordFocus(value);
+    } finally {
+      _$_CadUsuarioStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+nameFocused: ${nameFocused},
+cpfFocused: ${cpfFocused},
+phoneFocused: ${phoneFocused},
+emailFocused: ${emailFocused},
+passwordFocused: ${passwordFocused},
+confirmPasswordFocused: ${confirmPasswordFocused},
 name: ${name},
 cpf: ${cpf},
 phone: ${phone},
@@ -395,7 +578,9 @@ phoneError: ${phoneError},
 emailError: ${emailError},
 passwordError: ${passwordError},
 confirmPasswordError: ${confirmPasswordError},
-isFormValid: ${isFormValid}
+isFormValid: ${isFormValid},
+nameIconColor: ${nameIconColor},
+cpfIconColor: ${cpfIconColor}
     ''';
   }
 }

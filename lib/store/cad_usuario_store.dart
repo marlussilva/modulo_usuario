@@ -19,6 +19,24 @@ abstract class _CadUsuarioStoreBase with Store {
   final urlPhotoController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  @observable
+  bool nameFocused = false;
+
+  @observable
+  bool cpfFocused = false;
+
+  @observable
+  bool phoneFocused = false;
+
+  @observable
+  bool emailFocused = false;
+
+  @observable
+  bool passwordFocused = false;
+
+  @observable
+  bool confirmPasswordFocused = false;
+
   // Expressões regulares
   final _cpfRegex = RegExp(r"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
   final _phoneRegex =
@@ -194,6 +212,36 @@ abstract class _CadUsuarioStoreBase with Store {
   }
 
   @action
+  void setNameFocus(bool value) {
+    nameFocused = value;
+  }
+
+  @action
+  void setCpfFocus(bool value) {
+    cpfFocused = value;
+  }
+
+  @action
+  void setPhoneFocus(bool value) {
+    phoneFocused = value;
+  }
+
+  @action
+  void setEmailFocus(bool value) {
+    emailFocused = value;
+  }
+
+  @action
+  void setPasswordFocus(bool value) {
+    passwordFocused = value;
+  }
+
+  @action
+  void setConfirmPasswordFocus(bool value) {
+    confirmPasswordFocused = value;
+  }
+
+  @action
   Future<bool> save() async {
     if (!isFormValid) {
       return false;
@@ -231,5 +279,18 @@ abstract class _CadUsuarioStoreBase with Store {
         setCpfExists(user != null);
       }
     });
+  }
+  @computed
+  Color get nameIconColor {
+    if (nameError != null) return Colors.red; // Se tem erro, fica vermelho.
+
+    return Colors.black; // Quando perde o foco.
+  }
+
+  @computed
+  Color get cpfIconColor {
+    if (cpfError != null) return Colors.red; // Se tem erro, fica vermelho.
+
+    return Colors.black; // Quando perde o foco.
   }
 }

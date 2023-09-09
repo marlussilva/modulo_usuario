@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,11 @@ import 'package:modulo_usuario/util/image_assets.dart';
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
+  void Function()? onPressed;
+  LoginScreen({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -127,9 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }),
                 SizedBox(height: 10.0),
                 TextButton(
-                  onPressed: () {
-                    // Navegar para a tela de cadastro
-                  },
+                  onPressed: widget.onPressed,
                   child: Text(
                     'Não tem uma conta? Cadastre-se',
                     style: TextStyle(
