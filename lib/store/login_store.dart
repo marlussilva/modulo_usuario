@@ -67,6 +67,8 @@ abstract class _LoginStoreBase with Store {
     loading = true;
     // await Future.delayed(Duration(seconds: 5));
     var cpfAux = cpf?.replaceAll('.', '').replaceAll('-', '');
+
+    print("cpf $cpfAux  pass   $password ");
     final success = await UserService.authenticate(cpfAux!, password!);
 
     loading = false;

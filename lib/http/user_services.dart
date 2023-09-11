@@ -62,17 +62,31 @@ class UserService {
 
   static Future<bool> authenticate(String cpf, String password) async {
     try {
+      print("autenticate");
       final response = await _dio
           .post('${URL}login', data: {'cpf': cpf, 'password': password});
 
+      print("Código de status da resposta: ${response.statusCode}");
+
+      final responseData = json.decode(response.data.toString());
+
       if (response.statusCode == 200) {
-        final responseData = response.data;
-        // print(responseData['user']);
-        var user = User.fromMap(responseData['user']);
-        var storeGlobal = GetIt.I<GlobalStore>();
-        storeGlobal.setUser(user);
-        return responseData['authenticated'];
+        print(responseData);
+        if (responseData.containsKey('user')) {
+          var user = User.fromMap(responseData['user']);
+          var storeGlobal = GetIt.I<GlobalStore>();
+          storeGlobal.setUser(user);
+          print("Login bem-sucedido, retorna true");
+          return true;
+        } else {
+          print("A resposta não contém um campo 'user'. Retorna false.");
+          return false;
+        }
+      } else if (response.statusCode == 401) {
+        print("Não autorizado. CPF ou senha podem estar incorretos.");
+        return false;
       } else {
+        print("Erro desconhecido. Código de status: ${response.statusCode}");
         return false;
       }
     } catch (e) {

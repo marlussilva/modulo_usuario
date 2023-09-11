@@ -7,7 +7,7 @@ import 'package:modulo_usuario/store/global_store.dart';
 import 'package:modulo_usuario/store/login_store.dart';
 
 class InitializationUserModule {
-  static void singleton() {
+  static Future<void> singleton() async {
     GetIt.I.registerSingleton(GlobalStore());
     GetIt.I.registerSingleton(AvatarStore());
     GetIt.I.registerSingleton(CadUsuarioStore());
