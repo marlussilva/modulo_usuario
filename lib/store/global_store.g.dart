@@ -28,7 +28,7 @@ mixin _$GlobalStore on _GlobalStoreBase, Store {
       ActionController(name: '_GlobalStoreBase', context: context);
 
   @override
-  void setUser(User v) {
+  void setUser(User? v) {
     final _$actionInfo = _$_GlobalStoreBaseActionController.startAction(
         name: '_GlobalStoreBase.setUser');
     try {

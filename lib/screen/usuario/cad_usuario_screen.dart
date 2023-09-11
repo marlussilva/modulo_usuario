@@ -16,8 +16,9 @@ import 'package:modulo_usuario/store/global_store.dart';
 import 'package:modulo_usuario/util/image_assets.dart';
 
 class CadUsuarioScreen extends StatefulWidget {
-  CadUsuarioScreen({Key? key, this.onSave}) : super(key: key);
-  void Function()? onSave;
+  CadUsuarioScreen({Key? key, this.onSave, this.onBack}) : super(key: key);
+  final void Function()? onSave;
+  final void Function()? onBack;
 
   @override
   State<CadUsuarioScreen> createState() => _CadUsuarioScreenState();
@@ -35,8 +36,8 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
 
   @override
   void dispose() {
-    store.dispose(); // Importante para evitar vazamentos de memória
     super.dispose();
+    //store.dispose(); // Importante para evitar vazamentos de memória
   }
 
   Future<void> _handleSave(BuildContext context) async {
@@ -68,10 +69,18 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var mobile = (width < 600);
     return Scaffold(
       appBar: AppBar(
         title: Text('Cadastro de Usuário'),
         backgroundColor: Colors.blue,
+        leading: (mobile)
+            ? null
+            : IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: widget.onBack,
+              ),
       ),
       body: Card(
         child: Padding(

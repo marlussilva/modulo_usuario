@@ -9,5 +9,5 @@ abstract class _GlobalStoreBase with Store {
   User? user;
 
   @action
-  void setUser(User v) => user = v;
+  void setUser(User? v) => user = v;
 }

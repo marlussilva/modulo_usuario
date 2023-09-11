@@ -259,7 +259,7 @@ abstract class _CadUsuarioStoreBase with Store {
     user.email = email;
     user.name = name;
     user.password = password;
-    user.urlPhoto = '${user.cpf}.jpg';
+    user.urlPhoto = (image == null) ? null : '${user.cpf}.jpg';
     user.phone = phone
         ?.replaceAll('(', '')
         .replaceAll(')', '')

@@ -12,10 +12,12 @@ import 'package:modulo_usuario/util/image_assets.dart';
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-  void Function()? onPressed;
+  void Function()? onNotAccout;
+  void Function()? onButtonLogin;
   LoginScreen({
     Key? key,
-    this.onPressed,
+    this.onNotAccout,
+    this.onButtonLogin,
   }) : super(key: key);
 }
 
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+  //  store.dispose();
   }
 
   @override
@@ -37,8 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> handleSave(context) async {
     var success = await store.login();
     if (success) {
-      var s = GetIt.I<GlobalStore>();
-      print(s.user);
+      if (widget.onButtonLogin != null) {
+        var globalStore = GetIt.I<GlobalStore>();
+        print(globalStore.user);
+        widget.onButtonLogin!();
+      }
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Login realizado com sucesso")));
     } else {
@@ -133,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }),
                 SizedBox(height: 10.0),
                 TextButton(
-                  onPressed: widget.onPressed,
+                  onPressed: widget.onNotAccout,
                   child: Text(
                     'Não tem uma conta? Cadastre-se',
                     style: TextStyle(
