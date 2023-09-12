@@ -37,7 +37,6 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
   @override
   void dispose() {
     super.dispose();
-    //store.dispose(); // Importante para evitar vazamentos de memória
   }
 
   Future<void> _handleSave(BuildContext context) async {
@@ -70,17 +69,15 @@ class _CadUsuarioScreenState extends State<CadUsuarioScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var mobile = (width < 600);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Cadastro de Usuário'),
         backgroundColor: Colors.blue,
-        leading: (mobile)
-            ? null
-            : IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: widget.onBack,
-              ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
       ),
       body: Card(
         child: Padding(
