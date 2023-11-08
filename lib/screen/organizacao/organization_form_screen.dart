@@ -1,5 +1,7 @@
 // importações necessárias
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modulo_usuario/store/organization_store.dart';
@@ -11,71 +13,152 @@ class OrganizationFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organization Form'),
+        title: Text('Empresa ou Instituição'),
       ),
-      body: Form(
+      body: Card(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
-              _buildTextField(
-                label: "Name",
-                onChanged: store.setName,
-                errorText: store.nameError,
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
+                child: Icon(
+                  Icons.business_center,
+                  size: 100, // Tamanho do ícone
+                  color: Colors.black, // Cor do ícone
+                ),
               ),
-              _buildTextField(
-                label: "Legal Name",
-                onChanged: store.setLegalName,
-                errorText: store.legalNameError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setName,
+                  decoration: InputDecoration(
+                    labelText: 'Nome',
+                    errorText: store.nameError,
+                    prefixIcon: Icon(Icons.business),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "Tax ID",
-                onChanged: store.setTaxId,
-                errorText: store.taxIdError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setLegalName,
+                  decoration: InputDecoration(
+                    labelText: 'Razão Social',
+                    errorText: store.legalNameError,
+                    prefixIcon: Icon(Icons.account_balance),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "Address",
-                onChanged: store.setAddress,
-                errorText: store.addressError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setTaxId,
+                  decoration: InputDecoration(
+                    labelText: 'CNPJ',
+                    errorText: store.taxIdError,
+                    prefixIcon: Icon(Icons.fingerprint),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CnpjInputFormatter(),
+                  ],
+                ),
               ),
-              _buildTextField(
-                label: "City",
-                onChanged: store.setCity,
-                errorText: store.cityError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Endereço',
+                    errorText: store.addressError,
+                    prefixIcon: Icon(Icons.location_on),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "State",
-                onChanged: store.setState,
-                errorText: store.stateError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setCity,
+                  decoration: InputDecoration(
+                    labelText: 'Cidade',
+                    errorText: store.cityError,
+                    prefixIcon: Icon(Icons.location_city),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "Zip Code",
-                onChanged: store.setZipCode,
-                errorText: store.zipCodeError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setState,
+                  decoration: InputDecoration(
+                    labelText: 'Estado',
+                    errorText: store.stateError,
+                    prefixIcon: Icon(Icons.map),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "Country",
-                onChanged: store.setCountry,
-                errorText: store.countryError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setZipCode,
+                  decoration: InputDecoration(
+                    labelText: 'CEP',
+                    errorText: store.zipCodeError,
+                    prefixIcon: Icon(Icons.local_post_office),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CepInputFormatter(),
+                  ],
+                ),
               ),
-              _buildTextField(
-                label: "Phone Number",
-                onChanged: store.setPhoneNumber,
-                errorText: store.phoneNumberError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setCountry,
+                  decoration: InputDecoration(
+                    labelText: 'País',
+                    errorText: store.countryError,
+                    prefixIcon: Icon(Icons.flag),
+                  ),
+                ),
               ),
-              _buildTextField(
-                label: "Email",
-                onChanged: store.setEmail,
-                errorText: store.emailError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setPhoneNumber,
+                  decoration: InputDecoration(
+                    labelText: 'Telefone',
+                    errorText: store.phoneNumberError,
+                    prefixIcon: Icon(Icons.phone),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    TelefoneInputFormatter(),
+                  ],
+                ),
               ),
-              _buildTextField(
-                label: "Website",
-                onChanged: store.setWebsite,
-                errorText: store.websiteError,
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setEmail,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    errorText: store.emailError,
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
               ),
-              ElevatedButton(
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: store.setWebsite,
+                  decoration: InputDecoration(
+                    labelText: 'Website',
+                    errorText: store.websiteError,
+                    prefixIcon: Icon(Icons.web),
+                  ),
+                  keyboardType: TextInputType.url,
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              ElevatedButton.icon(
+                icon: Icon(Icons.save),
+                label: Text('Salvar'),
                 onPressed: _onSave,
-                child: Text('Save'),
               ),
             ],
           ),
@@ -84,27 +167,23 @@ class OrganizationFormScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({
-    required String label,
-    required Function(String) onChanged,
-    String? errorText, // Função que retorna uma String? diretamente
-  }) {
-    return Observer(
-      builder: (_) => TextField(
-        decoration: InputDecoration(
-          labelText: label,
-          errorText: errorText, // Chamando a função para obter a String?
-        ),
-        onChanged: onChanged,
-      ),
-    );
-  }
-
   void _onSave() async {
     if (await store.save()) {
       // Show success message or navigate away
+      /*ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Dados salvos com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );*/
     } else {
       // Show error message
+      /* ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao salvar os dados.'),
+          backgroundColor: Colors.red,
+        ),
+      );*/
     }
   }
 }

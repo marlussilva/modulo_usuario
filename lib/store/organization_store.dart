@@ -1,5 +1,6 @@
 // organization_store.dart
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_api/client_services/http/dio_organization.dart';
@@ -137,8 +138,10 @@ abstract class _OrganizationStoreBase with Store {
 
   @computed
   String? get phoneNumberError {
-    if (phoneNumberTouched && !_phoneRegex.hasMatch(phoneNumber ?? ''))
-      return "Número de telefone inválido!";
+    if (phoneNumberTouched &&
+        phoneNumber != null &&
+        UtilBrasilFields.obterTelefone(phoneNumber!, mascara: false).length !=
+            10) return "Número de telefone inválido!";
     return null;
   }
 

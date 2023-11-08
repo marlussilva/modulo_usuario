@@ -38,7 +38,7 @@ dependencies:
   get_it: ^7.6.0
   dio: ^5.3.2
   my_api:
-    #path: C:\\Users\\Marlus Dias Silva\\Documents\\Doutorado\\Dev\\my_api
+    #pat h: C:\\Users\\Marlus Dias Silva\\Documents\\Doutorado\\Dev\\my_api
     path: ../my_api  
   brasil_fields: ^1.14.0
   camera_macos: ^0.0.6+5

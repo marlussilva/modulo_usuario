@@ -8,8 +8,8 @@ import 'package:modulo_usuario/util/initialization.dart';
 
 void main() {
   InitializationUserModule.singleton();
-  teste();
-  //runApp(const MyApp());
+  //teste();
+  runApp(const MyApp());
 }
 
 Future<void> teste() async {
