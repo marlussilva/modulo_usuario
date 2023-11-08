@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modulo_usuario/http/user_services.dart';
+import 'package:modulo_usuario/screen/organizacao/organization_form_screen.dart';
 import 'package:modulo_usuario/screen/usuario/cad_usuario_screen.dart';
 import 'package:modulo_usuario/screen/login/login_screen.dart';
 import 'package:modulo_usuario/screen/theme/app_theme.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.getTheme(),
-      home: LoginScreen(),
+      home: OrganizationFormScreen(),
     );
   }
 }

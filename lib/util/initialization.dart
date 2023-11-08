@@ -5,6 +5,7 @@ import 'package:modulo_usuario/store/cad_usuario_store.dart';
 import 'package:modulo_usuario/store/camera_macos_store.dart';
 import 'package:modulo_usuario/store/global_store.dart';
 import 'package:modulo_usuario/store/login_store.dart';
+import 'package:modulo_usuario/store/organization_store.dart';
 
 class InitializationUserModule {
   static Future<void> singleton() async {
@@ -13,5 +14,6 @@ class InitializationUserModule {
     GetIt.I.registerSingleton(CadUsuarioStore());
     GetIt.I.registerSingleton(CameraMacOsStore());
     GetIt.I.registerSingleton(LoginStore());
+    GetIt.I.registerSingleton(OrganizationStore());
   }
 }
