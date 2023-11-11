@@ -469,7 +469,7 @@ mixin _$OrganizationStore on _OrganizationStoreBase, Store {
   }
 
   @override
-  void setLegalName(String? value) {
+  void setLegalName(String value) {
     final _$actionInfo = _$_OrganizationStoreBaseActionController.startAction(
         name: '_OrganizationStoreBase.setLegalName');
     try {
@@ -480,7 +480,7 @@ mixin _$OrganizationStore on _OrganizationStoreBase, Store {
   }
 
   @override
-  void setTaxId(String? value) {
+  void setTaxId(String value) {
     final _$actionInfo = _$_OrganizationStoreBaseActionController.startAction(
         name: '_OrganizationStoreBase.setTaxId');
     try {
@@ -546,7 +546,7 @@ mixin _$OrganizationStore on _OrganizationStoreBase, Store {
   }
 
   @override
-  void setPhoneNumber(String? value) {
+  void setPhoneNumber(String value) {
     final _$actionInfo = _$_OrganizationStoreBaseActionController.startAction(
         name: '_OrganizationStoreBase.setPhoneNumber');
     try {
@@ -557,7 +557,7 @@ mixin _$OrganizationStore on _OrganizationStoreBase, Store {
   }
 
   @override
-  void setEmail(String? value) {
+  void setEmail(String value) {
     final _$actionInfo = _$_OrganizationStoreBaseActionController.startAction(
         name: '_OrganizationStoreBase.setEmail');
     try {
@@ -568,7 +568,7 @@ mixin _$OrganizationStore on _OrganizationStoreBase, Store {
   }
 
   @override
-  void setWebsite(String? value) {
+  void setWebsite(String value) {
     final _$actionInfo = _$_OrganizationStoreBaseActionController.startAction(
         name: '_OrganizationStoreBase.setWebsite');
     try {

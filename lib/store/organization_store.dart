@@ -1,7 +1,3 @@
-// organization_store.dart
-
-import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_api/client_services/http/dio_organization.dart';
 import 'package:my_api/model/organization.dart';
@@ -11,22 +7,13 @@ part 'organization_store.g.dart';
 class OrganizationStore = _OrganizationStoreBase with _$OrganizationStore;
 
 abstract class _OrganizationStoreBase with Store {
-  final nameController = TextEditingController();
-  final legalNameController = TextEditingController();
-  final taxIdController = TextEditingController();
-  final addressController = TextEditingController();
-  final cityController = TextEditingController();
-  final stateController = TextEditingController();
-  final zipCodeController = TextEditingController();
-  final countryController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final emailController = TextEditingController();
-  final websiteController = TextEditingController();
-
   final RegExp _nameRegex = RegExp(r'^[a-zA-Z\s]+$');
-  final RegExp _zipCodeRegex = RegExp(r'^\d{5}-\d{3}$');
-  final RegExp _emailRegex = RegExp(r'^\S+@\S+\.\S+$');
-  final RegExp _phoneRegex = RegExp(r'^\(\d{2}\)\d{4,5}-\d{4}$');
+  final RegExp _zipCodeRegex = RegExp(r'^\d{2}\.\d{3}-\d{3}$');
+
+  final RegExp _emailRegex = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'); // Ajustado para uma expressão regular de email mais abrangente
+
+  final RegExp _phoneRegex = RegExp(r'^\(\d{2}\) \d{4,5}-\d{4}$');
   final RegExp _taxIdRegex = RegExp(r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$');
 
   @observable
@@ -96,80 +83,109 @@ abstract class _OrganizationStoreBase with Store {
   bool websiteTouched = false;
 
   @computed
-  String? get nameError =>
-      nameTouched && !_nameRegex.hasMatch(name ?? '') ? "Nome inválido!" : null;
+  String? get nameError => nameTouched && (name == null || name!.isEmpty)
+      ? "Nome é obrigatório!"
+      : nameTouched && !_nameRegex.hasMatch(name!)
+          ? "Nome inválido!"
+          : null;
 
   @computed
-  String? get legalNameError => legalNameTouched && (legalName?.isEmpty ?? true)
-      ? "Nome legal é obrigatório!"
+  String? get legalNameError =>
+      legalNameTouched && (legalName == null || legalName!.isEmpty)
+          ? "Nome legal é obrigatório!"
+          : null;
+
+  @computed
+  String? get taxIdError => taxIdTouched && (taxId == null || taxId!.isEmpty)
+      ? "CNPJ é obrigatório!"
+      : taxIdTouched && !_taxIdRegex.hasMatch(taxId!)
+          ? "CNPJ inválido!"
+          : null;
+
+  @computed
+  String? get addressError =>
+      addressTouched && (address == null || address!.isEmpty)
+          ? "Endereço é obrigatório!"
+          : null;
+
+  @computed
+  String? get cityError => cityTouched && (city == null || city!.isEmpty)
+      ? "Cidade é obrigatória!"
       : null;
 
   @computed
-  String? get taxIdError => taxIdTouched && !_taxIdRegex.hasMatch(taxId ?? '')
-      ? "CNPJ inválido!"
+  String? get stateError => stateTouched && (state == null || state!.isEmpty)
+      ? "Estado é obrigatório!"
       : null;
-
-  @computed
-  String? get addressError => addressTouched && (address?.isEmpty ?? true)
-      ? "Endereço é obrigatório!"
-      : null;
-
-  @computed
-  String? get cityError =>
-      cityTouched && (city?.isEmpty ?? true) ? "Cidade é obrigatória!" : null;
-
-  @computed
-  String? get stateError =>
-      stateTouched && (state?.isEmpty ?? true) ? "Estado é obrigatório!" : null;
 
   @computed
   String? get zipCodeError {
-    if (zipCodeTouched && (zipCode?.isEmpty ?? true))
+    if (zipCodeTouched && (zipCode == null || zipCode!.isEmpty)) {
       return "CEP é obrigatório!";
-    if (zipCodeTouched && !_zipCodeRegex.hasMatch(zipCode!))
+    } else if (zipCodeTouched && !_zipCodeRegex.hasMatch(zipCode!)) {
       return "CEP inválido!";
+    }
     return null;
   }
 
   @computed
-  String? get countryError => countryTouched && (country?.isEmpty ?? true)
-      ? "País é obrigatório!"
-      : null;
+  String? get countryError =>
+      countryTouched && (country == null || country!.isEmpty)
+          ? "País é obrigatório!"
+          : null;
 
   @computed
   String? get phoneNumberError {
-    if (phoneNumberTouched &&
-        phoneNumber != null &&
-        UtilBrasilFields.obterTelefone(phoneNumber!, mascara: false).length !=
-            10) return "Número de telefone inválido!";
+    if (phoneNumberTouched && (phoneNumber == null || phoneNumber!.isEmpty)) {
+      return "Telefone é obrigatório!";
+    } else if (phoneNumberTouched && !_phoneRegex.hasMatch(phoneNumber!)) {
+      return "Telefone inválido!";
+    }
     return null;
   }
 
   @computed
-  String? get emailError {
-    if (emailTouched && !_emailRegex.hasMatch(email ?? ''))
-      return "Email inválido!";
-    return null;
-  }
+  String? get emailError => emailTouched && (email == null || email!.isEmpty)
+      ? "Email é obrigatório!"
+      : emailTouched && !_emailRegex.hasMatch(email!)
+          ? "Email inválido!"
+          : null;
 
   @computed
-  String? get websiteError => websiteTouched && (website?.isEmpty ?? true)
-      ? "Website é obrigatório!"
-      : null;
+  String? get websiteError =>
+      websiteTouched && (website == null || website!.isEmpty)
+          ? "Website é obrigatório!"
+          : null;
 
   @computed
   bool get isFormValid =>
-      nameError == null &&
-      legalNameError == null &&
-      taxIdError == null &&
-      addressError == null &&
-      cityError == null &&
-      stateError == null &&
-      zipCodeError == null &&
-      countryError == null &&
-      phoneNumberError == null &&
-      emailError == null &&
-      websiteError == null;
+      name != null &&
+      name!.isNotEmpty &&
+      _nameRegex.hasMatch(name!) &&
+      legalName != null &&
+      legalName!.isNotEmpty &&
+      taxId != null &&
+      taxId!.isNotEmpty &&
+      _taxIdRegex.hasMatch(taxId!) &&
+      address != null &&
+      address!.isNotEmpty &&
+      city != null &&
+      city!.isNotEmpty &&
+      state != null &&
+      state!.isNotEmpty &&
+      zipCode != null &&
+      zipCode!.isNotEmpty &&
+      _zipCodeRegex.hasMatch(zipCode!) &&
+      country != null &&
+      country!.isNotEmpty &&
+      phoneNumber != null &&
+      phoneNumber!.isNotEmpty &&
+      _phoneRegex.hasMatch(phoneNumber!) &&
+      email != null &&
+      email!.isNotEmpty &&
+      _emailRegex.hasMatch(email!) &&
+      website != null &&
+      website!.isNotEmpty;
 
   @action
   void setName(String value) {
@@ -178,13 +194,13 @@ abstract class _OrganizationStoreBase with Store {
   }
 
   @action
-  void setLegalName(String? value) {
+  void setLegalName(String value) {
     legalNameTouched = true;
     legalName = value;
   }
 
   @action
-  void setTaxId(String? value) {
+  void setTaxId(String value) {
     taxIdTouched = true;
     taxId = value;
   }
@@ -220,19 +236,19 @@ abstract class _OrganizationStoreBase with Store {
   }
 
   @action
-  void setPhoneNumber(String? value) {
+  void setPhoneNumber(String value) {
     phoneNumberTouched = true;
     phoneNumber = value;
   }
 
   @action
-  void setEmail(String? value) {
+  void setEmail(String value) {
     emailTouched = true;
     email = value;
   }
 
   @action
-  void setWebsite(String? value) {
+  void setWebsite(String value) {
     websiteTouched = true;
     website = value;
   }
@@ -242,22 +258,22 @@ abstract class _OrganizationStoreBase with Store {
     if (!isFormValid) {
       return false;
     }
-    /*var organization = Organization(
-      name: name,
-      legalName: legalName,
-      taxId: taxId,
-      address: address,
-      city: city,
-      state: state,
-      zipCode: zipCode,
-      country: country,
-      phoneNumber: phoneNumber,
-      email: email,
-      website: website,
+
+    var organization = Organization(
+      name: name ?? '',
+      legalName: legalName ?? '',
+      taxId: taxId ?? '',
+      address: address ?? '',
+      city: city ?? '',
+      state: state ?? '',
+      zipCode: zipCode ?? '',
+      country: country ?? '',
+      phoneNumber: phoneNumber ?? '',
+      email: email ?? '',
+      website: website ?? '',
     );
 
     bool res = await DioOrganization.save(organization);
-    return res;*/
-    return true;
+    return res;
   }
 }

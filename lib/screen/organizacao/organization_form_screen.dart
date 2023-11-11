@@ -4,10 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modulo_usuario/screen/alert/custom_alert.dart';
 import 'package:modulo_usuario/store/organization_store.dart';
 
 class OrganizationFormScreen extends StatelessWidget {
   final OrganizationStore store = GetIt.I<OrganizationStore>();
+
+  Future<void> _handleSave(BuildContext context) async {
+    bool success = await store.save();
+
+    if (success) {
+      CustomAlert(
+              title: "Cadastro",
+              message: "Registro  realizado com sucesso!",
+              alertType: AlertType.success)
+          .show(context);
+    } else {
+      CustomAlert(
+              title: "Erro",
+              message: "Houve um problema ao tentar cadastrar!",
+              alertType: AlertType.error)
+          .show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,35 +174,18 @@ class OrganizationFormScreen extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              ElevatedButton.icon(
-                icon: Icon(Icons.save),
-                label: Text('Salvar'),
-                onPressed: _onSave,
-              ),
+              Observer(builder: (_) {
+                return ElevatedButton.icon(
+                  icon: Icon(Icons.save),
+                  label: Text('Salvar'),
+                  onPressed:
+                      store.isFormValid ? () => _handleSave(context) : null,
+                );
+              }),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _onSave() async {
-    if (await store.save()) {
-      // Show success message or navigate away
-      /*ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Dados salvos com sucesso!'),
-          backgroundColor: Colors.green,
-        ),
-      );*/
-    } else {
-      // Show error message
-      /* ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erro ao salvar os dados.'),
-          backgroundColor: Colors.red,
-        ),
-      );*/
-    }
   }
 }
